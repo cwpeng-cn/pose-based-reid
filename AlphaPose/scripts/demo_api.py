@@ -341,7 +341,7 @@ class SingleImageAlphaPose():
         print("Results have been written to json.")
 
 def example():
-    outputpath = "examples/res/"
+    outputpath = "../res"
     if not os.path.exists(outputpath + '/vis'):
         os.mkdir(outputpath + '/vis')
 

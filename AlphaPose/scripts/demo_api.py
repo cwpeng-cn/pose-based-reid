@@ -341,7 +341,7 @@ class SingleImageAlphaPose():
         print("Results have been written to json.")
 
 def example():
-    outputpath = "../res"
+    outputpath = "../../res"
 
     demo = SingleImageAlphaPose(args, cfg)
     im_name = args.inputimg    # the path to the target image

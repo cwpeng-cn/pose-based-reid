@@ -14,6 +14,7 @@ import time
 
 import cv2
 import numpy as np
+from tqdm import tqdm
 
 from alphapose.utils.transforms import get_func_heatmap_to_coord
 from alphapose.utils.pPose_nms import pose_nms
@@ -350,26 +351,20 @@ class SingleImageAlphaPose():
 
 def example():
     outputpath = "../../res"
+    inputpath = "../../sr"
 
     demo = SingleImageAlphaPose(args, cfg)
-    im_name = args.inputimg  # the path to the target image
-    image = cv2.cvtColor(cv2.imread(im_name), cv2.COLOR_BGR2RGB)
-    pose = demo.process(im_name, image)
-    img = demo.getImg()  # or you can just use: img = cv2.imread(image)
-    img = demo.vis(img, pose)  # visulize the pose result
-    if img is not None:
-        cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
-        print(os.path.join(outputpath, os.path.basename(im_name)))
-    else:
-        print(im_name + "can't detect all keypoints")
 
-    # if you want to vis the img:
-    # cv2.imshow("AlphaPose Demo", img)
-    # cv2.waitKey(30)
-
-    # write the result to json:
-    # result = [pose]
-    # demo.writeJson(result, outputpath, form=args.format, for_eval=args.eval)
+    for im_name in tqdm(os.listdir(inputpath)):
+        image = cv2.cvtColor(cv2.imread(im_name), cv2.COLOR_BGR2RGB)
+        pose = demo.process(im_name, image)
+        img = demo.getImg()  # or you can just use: img = cv2.imread(image)
+        img = demo.vis(img, pose)  # visulize the pose result
+        if img is not None:
+            cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
+            print(os.path.join(outputpath, os.path.basename(im_name)))
+        else:
+            print(im_name + " can't detect all keypoints")
 
 
 if __name__ == "__main__":

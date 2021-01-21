@@ -350,14 +350,15 @@ def example():
     img = demo.getImg()     # or you can just use: img = cv2.imread(image)
     img = demo.vis(img, pose)   # visulize the pose result
     cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
+    print(os.path.join(outputpath, os.path.basename(im_name)))
     
     # if you want to vis the img:
     # cv2.imshow("AlphaPose Demo", img)
     # cv2.waitKey(30)
 
     # write the result to json:
-    result = [pose]
-    demo.writeJson(result, outputpath, form=args.format, for_eval=args.eval)
+    # result = [pose]
+    # demo.writeJson(result, outputpath, form=args.format, for_eval=args.eval)
 
 if __name__ == "__main__":
     example()

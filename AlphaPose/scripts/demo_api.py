@@ -338,7 +338,9 @@ class SingleImageAlphaPose():
     def vis(self, image, pose):
         if pose is not None:
             image = self.writer.vis_frame(image, pose, self.writer.opt)
-        return image
+            return image
+        else:
+            return None
 
     def writeJson(self, final_result, outputpath, form='coco', for_eval=False):
         from alphapose.utils.pPose_nms import write_json

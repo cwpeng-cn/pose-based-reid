@@ -193,7 +193,7 @@ def vis_frame(frame, im_res, opt, format='coco'):
     if kp_num == 17:
         if format == 'coco':
             l_pair = [
-                (0, 1), (0, 2), (1, 3), (2, 4),  # Head
+                (0,5),  # Head
                 (5, 6), (5, 7), (7, 9), (6, 8), (8, 10),
                 (17, 11), (17, 12),  # Body
                 (11, 13), (12, 14), (13, 15), (14, 16)

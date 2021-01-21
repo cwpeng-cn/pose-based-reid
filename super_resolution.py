@@ -48,4 +48,5 @@ for img in tqdm(img_paths):
     # --------------------------------
     # (3) save results
     # --------------------------------
-    util.imsave(img_E, "../sr/" + img.replace("/", "*"))
+    save_path = "../sr/" + img.replace("/", "-")
+    util.imsave(img_E, save_path)

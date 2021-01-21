@@ -358,7 +358,7 @@ def vis_frame(frame, im_res, opt, format='coco'):
         vis_thres = 0.05 if kp_num == 136 else 0.4
         for n in range(kp_scores.shape[0]):
             if kp_scores[n] <= vis_thres:
-                continue
+                return None
             cor_x, cor_y = int(kp_preds[n, 0]), int(kp_preds[n, 1])
             part_line[n] = (int(cor_x), int(cor_y))
             bg = img.copy()

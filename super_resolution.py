@@ -18,7 +18,7 @@ model = model.to("cuda")
 # --------------------------------
 # read image
 # --------------------------------
-L_folder = os.path.join("prid_2011")
+L_folder = os.path.join("../prid2011/prid_2011/multi_shot")
 img_paths = []
 
 for cam in os.listdir(L_folder):
@@ -48,4 +48,4 @@ for img in tqdm(img_paths):
     # --------------------------------
     # (3) save results
     # --------------------------------
-    util.imsave(img_E, "sr/" + img.replace("/", "*"))
+    util.imsave(img_E, "../sr/" + img.replace("/", "*"))

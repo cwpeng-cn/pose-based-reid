@@ -356,6 +356,7 @@ def example():
     demo = SingleImageAlphaPose(args, cfg)
 
     for im_name in tqdm(os.listdir(inputpath)):
+        im_name = os.path.join(inputpath, im_name)
         image = cv2.cvtColor(cv2.imread(im_name), cv2.COLOR_BGR2RGB)
         pose = demo.process(im_name, image)
         img = demo.getImg()  # or you can just use: img = cv2.imread(image)

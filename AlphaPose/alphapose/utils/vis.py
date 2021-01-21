@@ -174,20 +174,22 @@ def vis_frame_fast(frame, im_res, opt, format='coco'):
             cv2.rectangle(img, (int(bbox[0]), int(bbox[2])), (int(bbox[1]), int(bbox[3])), color, 2)
             if opt.tracking:
                 cv2.putText(img, str(human['idx']), (int(bbox[0]), int((bbox[2] + 26))), DEFAULT_FONT, 1, BLACK, 2)
+
         # Draw keypoints
-        vis_thres = 0.05 if kp_num == 136 else 0.4
-        for n in range(kp_scores.shape[0]):
-            if kp_scores[n] <= vis_thres:
-                continue
-            cor_x, cor_y = int(kp_preds[n, 0]), int(kp_preds[n, 1])
-            part_line[n] = (cor_x, cor_y)
-            if n < len(p_color):
-                if opt.tracking:
-                    cv2.circle(img, (cor_x, cor_y), 3, color, -1)
-                else:
-                    cv2.circle(img, (cor_x, cor_y), 3, p_color[n], -1)
-            else:
-                cv2.circle(img, (cor_x, cor_y), 1, (255, 255, 255), 2)
+        # vis_thres = 0.05 if kp_num == 136 else 0.4
+        # for n in range(kp_scores.shape[0]):
+        #     if kp_scores[n] <= vis_thres:
+        #         continue
+        #     cor_x, cor_y = int(kp_preds[n, 0]), int(kp_preds[n, 1])
+        #     part_line[n] = (cor_x, cor_y)
+        #     if n < len(p_color):
+        #         if opt.tracking:
+        #             cv2.circle(img, (cor_x, cor_y), 3, color, -1)
+        #         else:
+        #             cv2.circle(img, (cor_x, cor_y), 3, p_color[n], -1)
+        #     else:
+        #         cv2.circle(img, (cor_x, cor_y), 1, (255, 255, 255), 2)
+
         # Draw limbs
         for i, (start_p, end_p) in enumerate(l_pair):
             if start_p in part_line and end_p in part_line:

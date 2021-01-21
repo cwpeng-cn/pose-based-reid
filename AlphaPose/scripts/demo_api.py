@@ -67,7 +67,8 @@ cfg = update_config(args.cfg)
 
 args.gpus = [int(args.gpus[0])] if torch.cuda.device_count() >= 1 else [-1]
 args.device = torch.device("cuda:" + str(args.gpus[0]) if args.gpus[0] >= 0 else "cpu")
-args.tracking = args.pose_track or args.pose_flow or args.detector=='tracker'
+args.tracking = args.pose_track or args.pose_flow or args.detector == 'tracker'
+
 
 class DetectionLoader():
     def __init__(self, detector, cfg, opt):
@@ -111,7 +112,7 @@ class DetectionLoader():
         # add one dimension at the front for batch if image shape (3,h,w)
         if img.dim() == 3:
             img = img.unsqueeze(0)
-        orig_img = image # scipy.misc.imread(im_name_k, mode='RGB') is depreciated
+        orig_img = image  # scipy.misc.imread(im_name_k, mode='RGB') is depreciated
         im_dim = orig_img.shape[1], orig_img.shape[0]
 
         im_name = os.path.basename(im_name)
@@ -198,15 +199,16 @@ class DataWriter():
             # location prediction (n, kp, 2) | score prediction (n, kp, 1)
             assert hm_data.dim() == 4
             if hm_data.size()[1] == 136:
-                self.eval_joints = [*range(0,136)]
+                self.eval_joints = [*range(0, 136)]
             elif hm_data.size()[1] == 26:
-                self.eval_joints = [*range(0,26)]
+                self.eval_joints = [*range(0, 26)]
             pose_coords = []
             pose_scores = []
 
             for i in range(hm_data.shape[0]):
                 bbox = cropped_boxes[i].tolist()
-                pose_coord, pose_score = self.heatmap_to_coord(hm_data[i][self.eval_joints], bbox, hm_shape=hm_size, norm_type=norm_type)
+                pose_coord, pose_score = self.heatmap_to_coord(hm_data[i][self.eval_joints], bbox, hm_shape=hm_size,
+                                                               norm_type=norm_type)
                 pose_coords.append(torch.from_numpy(pose_coord).unsqueeze(0))
                 pose_scores.append(torch.from_numpy(pose_score).unsqueeze(0))
             preds_img = torch.cat(pose_coords)
@@ -219,11 +221,11 @@ class DataWriter():
             for k in range(len(scores)):
                 _result.append(
                     {
-                        'keypoints':preds_img[k],
-                        'kp_score':preds_scores[k],
+                        'keypoints': preds_img[k],
+                        'kp_score': preds_scores[k],
                         'proposal_score': torch.mean(preds_scores[k]) + scores[k] + 1.25 * max(preds_scores[k]),
-                        'idx':ids[k],
-                        'bbox':[boxes[k][0], boxes[k][1], boxes[k][2]-boxes[k][0],boxes[k][3]-boxes[k][1]] 
+                        'idx': ids[k],
+                        'bbox': [boxes[k][0], boxes[k][1], boxes[k][2] - boxes[k][0], boxes[k][3] - boxes[k][1]]
                     }
                 )
 
@@ -245,6 +247,7 @@ class DataWriter():
     def save(self, boxes, scores, ids, hm_data, cropped_boxes, orig_img, im_name):
         self.item = (boxes, scores, ids, hm_data, cropped_boxes, orig_img, im_name)
 
+
 class SingleImageAlphaPose():
     def __init__(self, args, cfg):
         self.args = args
@@ -259,7 +262,7 @@ class SingleImageAlphaPose():
 
         self.pose_model.to(args.device)
         self.pose_model.eval()
-        
+
         self.det_loader = DetectionLoader(get_detector(self.args), self.cfg, self.args)
 
     def process(self, im_name, image):
@@ -275,7 +278,8 @@ class SingleImageAlphaPose():
         try:
             start_time = getTime()
             with torch.no_grad():
-                (inps, orig_img, im_name, boxes, scores, ids, cropped_boxes) = self.det_loader.process(im_name, image).read()
+                (inps, orig_img, im_name, boxes, scores, ids, cropped_boxes) = self.det_loader.process(im_name,
+                                                                                                       image).read()
                 if orig_img is None:
                     raise Exception("no image is given")
                 if boxes is None or boxes.nelement() == 0:
@@ -315,7 +319,8 @@ class SingleImageAlphaPose():
             if self.args.profile:
                 print(
                     'det time: {dt:.4f} | pose time: {pt:.4f} | post processing: {pn:.4f}'.format(
-                        dt=np.mean(runtime_profile['dt']), pt=np.mean(runtime_profile['pt']), pn=np.mean(runtime_profile['pn']))
+                        dt=np.mean(runtime_profile['dt']), pt=np.mean(runtime_profile['pt']),
+                        pn=np.mean(runtime_profile['pn']))
                 )
             print('===========================> Finish Model Running.')
         except Exception as e:
@@ -340,18 +345,22 @@ class SingleImageAlphaPose():
         write_json(final_result, outputpath, form=form, for_eval=for_eval)
         print("Results have been written to json.")
 
+
 def example():
     outputpath = "../../res"
 
     demo = SingleImageAlphaPose(args, cfg)
-    im_name = args.inputimg    # the path to the target image
+    im_name = args.inputimg  # the path to the target image
     image = cv2.cvtColor(cv2.imread(im_name), cv2.COLOR_BGR2RGB)
     pose = demo.process(im_name, image)
-    img = demo.getImg()     # or you can just use: img = cv2.imread(image)
-    img = demo.vis(img, pose)   # visulize the pose result
-    cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
-    print(os.path.join(outputpath, os.path.basename(im_name)))
-    
+    img = demo.getImg()  # or you can just use: img = cv2.imread(image)
+    img = demo.vis(img, pose)  # visulize the pose result
+    if img != None:
+        cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
+        print(os.path.join(outputpath, os.path.basename(im_name)))
+    else:
+        print(im_name + "can't detect all keypoints")
+
     # if you want to vis the img:
     # cv2.imshow("AlphaPose Demo", img)
     # cv2.waitKey(30)
@@ -359,6 +368,7 @@ def example():
     # write the result to json:
     # result = [pose]
     # demo.writeJson(result, outputpath, form=args.format, for_eval=args.eval)
+
 
 if __name__ == "__main__":
     example()

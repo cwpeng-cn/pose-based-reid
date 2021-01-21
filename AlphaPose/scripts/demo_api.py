@@ -323,7 +323,7 @@ class SingleImageAlphaPose():
                         dt=np.mean(runtime_profile['dt']), pt=np.mean(runtime_profile['pt']),
                         pn=np.mean(runtime_profile['pn']))
                 )
-            print('===========================> Finish Model Running.')
+            # print('===========================> Finish Model Running.')
         except Exception as e:
             print(repr(e))
             print('An error as above occurs when processing the images, please check it')
@@ -363,7 +363,7 @@ def example():
         img = demo.vis(img, pose)  # visulize the pose result
         if img is not None:
             cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
-            print(os.path.join(outputpath, os.path.basename(im_name)))
+            # print(os.path.join(outputpath, os.path.basename(im_name)))
         # else:
         #     print(im_name + " can't detect all keypoints")
 

@@ -7,5 +7,5 @@ pip install -U -q PyDrive
 python -m pip install cython
 sudo apt-get install libyaml-dev
 
-cd Alphapose&&python setup.py build develop
+cd AlphaPose&&python setup.py build develop
 

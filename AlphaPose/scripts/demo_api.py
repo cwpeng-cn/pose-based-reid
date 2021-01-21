@@ -358,7 +358,7 @@ def example():
     img = demo.getImg()  # or you can just use: img = cv2.imread(image)
     img = demo.vis(img, pose)  # visulize the pose result
     print(img)
-    if type(img) != 'NoneType':
+    if img is not None:
         cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
         print(os.path.join(outputpath, os.path.basename(im_name)))
     else:

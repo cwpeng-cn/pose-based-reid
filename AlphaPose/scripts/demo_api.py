@@ -342,8 +342,6 @@ class SingleImageAlphaPose():
 
 def example():
     outputpath = "../res"
-    if not os.path.exists(outputpath + '/vis'):
-        os.mkdir(outputpath + '/vis')
 
     demo = SingleImageAlphaPose(args, cfg)
     im_name = args.inputimg    # the path to the target image
@@ -351,7 +349,7 @@ def example():
     pose = demo.process(im_name, image)
     img = demo.getImg()     # or you can just use: img = cv2.imread(image)
     img = demo.vis(img, pose)   # visulize the pose result
-    cv2.imwrite(os.path.join(outputpath, 'vis', os.path.basename(im_name)), img)
+    cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
     
     # if you want to vis the img:
     # cv2.imshow("AlphaPose Demo", img)

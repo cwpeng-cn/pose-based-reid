@@ -27,7 +27,7 @@ for cam in os.listdir(L_folder):
         person_path = os.path.join(cam_path, person)
         for name in os.listdir(person_path):
             img_path = os.path.join(person_path, name)
-            img_paths = img_paths.append(img_path)
+            img_paths.append(img_path)
 
 for img in tqdm(img_paths):
     # --------------------------------

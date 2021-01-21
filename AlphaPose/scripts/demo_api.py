@@ -364,8 +364,8 @@ def example():
         if img is not None:
             cv2.imwrite(os.path.join(outputpath, os.path.basename(im_name)), img)
             print(os.path.join(outputpath, os.path.basename(im_name)))
-        else:
-            print(im_name + " can't detect all keypoints")
+        # else:
+        #     print(im_name + " can't detect all keypoints")
 
 
 if __name__ == "__main__":

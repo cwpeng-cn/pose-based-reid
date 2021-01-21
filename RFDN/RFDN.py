@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import block as B
+import RFDN.block as B
 
 def make_model(args, parent=False):
     model = RFDN()

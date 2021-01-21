@@ -175,7 +175,6 @@ def vis_frame_fast(frame, im_res, opt, format='coco'):
             if opt.tracking:
                 cv2.putText(img, str(human['idx']), (int(bbox[0]), int((bbox[2] + 26))), DEFAULT_FONT, 1, BLACK, 2)
 
-
         # Draw keypoints
         vis_thres = 0.05 if kp_num == 136 else 0.4
         for n in range(kp_scores.shape[0]):
@@ -323,6 +322,7 @@ def vis_frame(frame, im_res, opt, format='coco'):
         raise NotImplementedError
     # im_name = os.path.basename(im_res['imgname'])
     img = frame.copy()
+    img[:, :, :] = 0
     height, width = img.shape[:2]
     for human in im_res['result']:
         part_line = {}
